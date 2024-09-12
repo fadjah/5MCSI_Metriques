@@ -35,32 +35,17 @@ def mongraphique():
 def monhistogramme():
     return render_template("histogramme.html")
 
-# Route pour extraire les minutes d'une date donnée
+@app.route('/commits/')
+def index():
+    return render_template('commits.html')
 @app.route('/extract-minutes/<date_string>')
 def extract_minutes(date_string):
-    date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-    minutes = date_object.minute
-    return jsonify({'minutes': minutes})
-
-# Route pour afficher le graphique des commits par minute
-@app.route('/commits/')
-def commits_graph():
-    # URL de l'API GitHub pour extraire les commits du projet
-    url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
-    
-    # Effectuer la requête à l'API GitHub pour obtenir les commits
-    response = requests.get(url)
-    commits_data = response.json()
-
-    # Extraire les minutes des dates de commit
-    commit_minutes = []
-    for commit in commits_data:
-        commit_date = commit['commit']['author']['date']
-        minutes = datetime.strptime(commit_date, '%Y-%m-%dT%H:%M:%SZ').minute
-        commit_minutes.append(minutes)
-
-    # Passer les minutes au template HTML pour afficher le graphique
-    return render_template('commits.html', commit_minutes=commit_minutes)
+    try:
+        date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+        minutes = date_object.strftime('%Y-%m-%d %H:%M')  # Format minute
+        return jsonify({'minutes': minutes})
+    except ValueError:
+        return jsonify({'error': 'Invalid date format. Use the following format: YYYY-MM-DDTHH:MM:SSZ'}), 400
   
 if __name__ == "__main__":
   app.run(debug=True)
