@@ -45,7 +45,7 @@ def extract_minutes(date_string):
 # Route pour afficher le graphique des commits par minute
 @app.route('/commits/')
 def commits_graph():
-    # URL de l'API GitHub pour extraire les commits
+    # URL de l'API GitHub pour extraire les commits du projet
     url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
     
     # Effectuer la requête à l'API GitHub pour obtenir les commits
