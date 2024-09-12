@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique des Commits par Minute</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Récupérer les données des commits passées depuis Flask
+            var commitMinutes = {{ commit_minutes | safe }};
+            
+            // Préparer les données pour Google Charts
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Minute');
+            data.addColumn('number', 'Nombre de Commits');
+
+            var commitCounts = {};
+
+            // Compter le nombre de commits pour chaque minute
+            commitMinutes.forEach(function(minute) {
+                if (commitCounts[minute]) {
+                    commitCounts[minute]++;
+                } else {
+                    commitCounts[minute] = 1;
+                }
+            });
+
+            // Ajouter les données dans le tableau de Google Charts
+            for (var minute in commitCounts) {
+                data.addRow([parseInt(minute), commitCounts[minute]]);
+            }
+
+            // Options du graphique
+            var options = {
+                title: 'Répartition des Commits par Minute',
+                hAxis: {title: 'Minutes'},
+                vAxis: {title: 'Nombre de Commits'},
+                legend: 'none',
+                colors: ['#1b9e77']
+            };
+
+            // Dessiner le graphique
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+    <h1>Graphique des Commits par Minute</h1>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
