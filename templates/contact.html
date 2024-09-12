@@ -6,45 +6,100 @@
     <title>Page de Contact</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff; /* Une couleur douce pour le fond */
             margin: 0;
             padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
-        .contact-form {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+        /* Ajout de donuts en arrière-plan */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 192, 203, 0.5); /* Donut rose pâle */
             width: 300px;
+            height: 300px;
+            top: -50px;
+            right: -80px;
+            z-index: 0;
+            filter: blur(30px);
         }
+
+        body::after {
+            background: rgba(144, 238, 144, 0.5); /* Donut vert pâle */
+            width: 200px;
+            height: 200px;
+            bottom: -60px;
+            left: -60px;
+        }
+
+        /* Styles du formulaire de contact */
+        .contact-form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            width: 350px;
+            text-align: center;
+        }
+
         .contact-form h2 {
             margin-bottom: 20px;
-            text-align: center;
+            font-size: 24px;
             color: #333;
         }
+
         .contact-form input, .contact-form textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
         }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: #00a8ff;
+            box-shadow: 0 0 8px rgba(0, 168, 255, 0.2);
+        }
+
         .contact-form button {
-            background-color: #28a745;
+            background-color: #00a8ff;
             color: white;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
             width: 100%;
         }
+
         .contact-form button:hover {
-            background-color: #218838;
+            background-color: #0077cc;
+        }
+
+        /* Ajout d'une animation subtile pour les boutons */
+        .contact-form button:active {
+            transform: scale(0.98);
+        }
+
+        /* Styles pour les placeholders */
+        ::placeholder {
+            color: #888;
+            opacity: 0.7;
         }
     </style>
 </head>
