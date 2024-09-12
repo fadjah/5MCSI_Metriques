@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Metrique</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body>
+    <div id="chart_div"></div>
+    <script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+
+      function drawBackgroundColor() {
+        function drawChart(data) {
+          // Convertir les données récupérées en un tableau utilisable par Google Charts
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Date');
+          dataTable.addColumn('number', 'Température');
+
+          data.results.forEach(entry => {
+            var date = new Date(entry.Jour * 1000);
+            dataTable.addRow([date.toLocaleDateString(), entry.temp]);
+          });
+
+          // Configurer les options du graphique à colonnes
+          var options = {
+            title: 'Évolution des températures de la ville de Tawarano',
+            legend: { position: 'bottom' },
+            hAxis: {
+              title: 'Date',
+              slantedText: true, // Incliner les étiquettes pour lisibilité
+              slantedTextAngle: 45
+            },
+            vAxis: {
+              title: 'Température (°C)'
+            },
+            bars: 'vertical', // S'assure que le graphique soit un histogramme vertical
+            colors: ['#1b9e77'], // Couleur des colonnes
+            backgroundColor: '#f1f8e9' // Couleur de fond du graphique
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          chart.draw(dataTable, options);
+        }
+
+        // Récupération de données depuis notre API /tawarano/
+        fetch('/tawarano/')
+          .then(response => response.json())
+          .then(data => {
+            drawChart(data);
+          });
+      }
+    </script>
+  </body>
+</html>
